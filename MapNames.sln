@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapNames", "MapNames.csproj", "{CDD745E0-B0F6-429B-977C-E842C35BD82E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDD745E0-B0F6-429B-977C-E842C35BD82E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CDD745E0-B0F6-429B-977C-E842C35BD82E}.Debug|x64.Build.0 = Debug|Any CPU
+		{CDD745E0-B0F6-429B-977C-E842C35BD82E}.Release|x64.ActiveCfg = Release|Any CPU
+		{CDD745E0-B0F6-429B-977C-E842C35BD82E}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
