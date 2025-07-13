@@ -8,30 +8,31 @@ namespace MapNametags.Behaviours;
 [DisallowMultipleComponent]
 public class AbsoluteMapLabelBehaviour : MonoBehaviour
 {
+    public string MarkerKey { get; set; }
+
     private RectTransform _labelRt;
     private RectTransform _canvasRt;
     private Canvas _canvas;
     private RectTransform _markerRt;
     private float _pixelOffset;
-    private Func<string> _getText;
     private TextMeshProUGUI _tmp;
 
-    public void Initialize(
-        RectTransform canvasRt,
-        RectTransform markerRt,
-        float pixelOffset,
-        Func<string> getText)
+    public void Initialize(RectTransform canvasRt, RectTransform markerRt, float pixelOffset, Func<string> getText,
+        Func<Color> getColor)
     {
         _canvasRt = canvasRt;
         _canvas = canvasRt.GetComponent<Canvas>();
         _markerRt = markerRt;
         _pixelOffset = pixelOffset;
-        _getText = getText;
 
-        // initialize text now that getText is set
-        if (_tmp != null && _getText != null)
+        if (_tmp != null && getText != null)
         {
-            _tmp.text = _getText();
+            _tmp.text = getText();
+        }
+
+        if (_tmp != null && getColor != null)
+        {
+            _tmp.color = getColor();
         }
 
         gameObject.SetActive(MapUIManager.IsOpen);
@@ -54,7 +55,6 @@ public class AbsoluteMapLabelBehaviour : MonoBehaviour
         _tmp.fontSize = 13.5f;
         _tmp.alignment = TextAlignmentOptions.Center;
         _tmp.raycastTarget = false;
-        // Do not set text here; wait until Initialize
     }
 
     private void LateUpdate()
@@ -64,7 +64,7 @@ public class AbsoluteMapLabelBehaviour : MonoBehaviour
             MapNametagsPlugin.Logger.LogWarning("Label LateUpdate: missing marker/canvas");
             return;
         }
-        
+
         // Compute absolute screen->local pos
         var cam = _canvas.renderMode == RenderMode.ScreenSpaceOverlay
             ? null

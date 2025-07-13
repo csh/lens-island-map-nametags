@@ -1,8 +1,10 @@
-﻿using BepInEx;
+﻿using System.Collections.Generic;
+using BepInEx;
 using BepInEx.Logging;
+using FlowStudio.Map;
 using HarmonyLib;
-using MapNametags.Behaviours;
 using MapNametags.Patches;
+using UnityEngine.SceneManagement;
 
 namespace MapNametags;
 
@@ -11,6 +13,16 @@ public class MapNametagsPlugin : BaseUnityPlugin
 {
     internal new static ManualLogSource Logger;
 
+    private static readonly HashSet<string> NonGameScenes =
+    [
+        "Boot",
+        "Intro",
+        "MainMenu",
+        "LoadingScreen"
+    ];
+
+    private bool _inGameScene;
+    private bool _wasMapOpen;
     private Harmony _harmony;
 
     private void Awake()
@@ -26,15 +38,34 @@ public class MapNametagsPlugin : BaseUnityPlugin
         {
             Logger.LogDebug($"Patched {patchedMethod.DeclaringType?.Name}.{patchedMethod.Name}");
         }
+        
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        _inGameScene = !NonGameScenes.Contains(SceneManager.GetActiveScene().name);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (_inGameScene && scene.name == "MainMenu")
+        {
+            NametagManager.RemoveAllLabels();
+        }
+        _inGameScene = !NonGameScenes.Contains(scene.name);
+    }
+
+    private void Update()
+    {
+        if (!_inGameScene || MapUIManager.Instance is null) return;
+        
+        var isOpen = MapUIManager.IsOpen;
+        if (isOpen == _wasMapOpen) return;
+        NametagManager.SetAllLabelsVisible(isOpen);
+        _wasMapOpen = isOpen;
     }
 
     private void OnDestroy()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         _harmony?.UnpatchSelf();
-        
-        foreach (var label in FindObjectsOfType<AbsoluteMapLabelBehaviour>())
-        {
-            Destroy(label.gameObject);
-        }
+        NametagManager.RemoveAllLabels();
     }
 }
