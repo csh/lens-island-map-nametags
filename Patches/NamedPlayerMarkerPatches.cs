@@ -26,14 +26,10 @@ public static class NamedPlayerMarkerPatches
     [HarmonyPostfix, HarmonyPatch(typeof(MapUIManager), nameof(MapUIManager.Init))]
     public static void InitPostfix()
     {
-        NametagManager.CreateNametag(
-            "LocalPlayerNametag", 
-            MapUIManager.Instance.m_playerReference, 
-            () => "You",
-            () => Color.red
-        );
+        if (MapNametagsPlugin.DisplayLocalPlayerNametag.Value == false) return;
+        NametagManager.CreateLocalPlayerNametag();
     }
-
+    
     [HarmonyPostfix, HarmonyPatch(typeof(MapManager), nameof(MapManager.SpawnMapMarker))]
     public static void SpawnMapMarkerPostfix(
         string key,

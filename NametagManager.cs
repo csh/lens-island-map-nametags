@@ -20,6 +20,16 @@ public static class NametagManager
         }
     }
 
+    public static void CreateLocalPlayerNametag()
+    {
+        CreateNametag(
+            "LocalPlayerNametag", 
+            MapUIManager.Instance.m_playerReference, 
+            () => "You",
+            () => Color.red
+        );
+    }
+
     public static void CreateNametag(string key, RectTransform markerRT, Func<string> getText, Func<Color> getColor)
     {
         if (string.IsNullOrEmpty(key))
