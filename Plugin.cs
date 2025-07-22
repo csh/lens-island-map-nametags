@@ -59,13 +59,19 @@ public class MapNametagsPlugin : BaseUnityPlugin
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
-        DisplayLocalPlayerNametag.SettingChanged += ToggleLocalPlayerNametagUsage;
+        if (DisplayLocalPlayerNametag is not null)
+        {
+            DisplayLocalPlayerNametag.SettingChanged += ToggleLocalPlayerNametagUsage;
+        }
     }
 
     private void OnDisable()
     {
-        DisplayLocalPlayerNametag.SettingChanged -= ToggleLocalPlayerNametagUsage;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (DisplayLocalPlayerNametag is not null)
+        {
+            DisplayLocalPlayerNametag.SettingChanged -= ToggleLocalPlayerNametagUsage;
+        }
     }
 
     private void ToggleLocalPlayerNametagUsage(object sender, EventArgs e)

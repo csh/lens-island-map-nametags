@@ -107,11 +107,10 @@ public static class NametagManager
 
         Labels.Clear();
 
-        var canvasRT = CanvasRT;
-        if (canvasRT == null) return;
-        foreach (var label in canvasRT.GetComponentsInChildren<AbsoluteMapLabelBehaviour>(true))
+        // Guard against "oddities" (my shit coding)
+        foreach (var label in Object.FindObjectsOfType<AbsoluteMapLabelBehaviour>())
         {
-            Object.Destroy(label.gameObject);
+            Object.Destroy(label);
         }
     }
 }
