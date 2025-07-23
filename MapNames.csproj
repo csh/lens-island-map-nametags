@@ -27,6 +27,7 @@
         <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2021.3.45" IncludeAssets="compile" />
         <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.*" PrivateAssets="all" />
+        <PackageReference Include="LensIsland.GameLibs" Version="2025.7.10-r.1"/>
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
@@ -53,20 +54,4 @@
         <!-- Release: Copy DLL only to plugins -->
         <Copy Condition="'$(Configuration)' == 'Release'" SourceFiles="$(PluginOutputPath)" DestinationFolder="$(BepInExOutputDir)" SkipUnchangedFiles="true" />
     </Target>
-    
-    <ItemGroup>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>$(GamePath)\Len's Island_Data\Managed\Assembly-CSharp.dll</HintPath>
-            <Publicize>true</Publicize>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="Unity.TextMeshPro">
-            <HintPath>$(GamePath)\Len's Island_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-        <Reference Include="UnityEngine.UI">
-            <HintPath>$(GamePath)\Len's Island_Data\Managed\UnityEngine.UI.dll</HintPath>
-            <Private>false</Private>
-        </Reference>
-    </ItemGroup>
 </Project>

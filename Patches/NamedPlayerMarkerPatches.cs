@@ -39,9 +39,6 @@ public static class NamedPlayerMarkerPatches
         if (markerType != MarkerType.Client)
             return;
 
-        if (NetworkBootstrapper.isServer == false)
-            return;
-
         var marker = MapManager.Instance.GetMarker(key);
         if (marker == null) return;
         var markerRT = marker.GetComponent<RectTransform>();
