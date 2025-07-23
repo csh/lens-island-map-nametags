@@ -110,7 +110,7 @@ public static class NametagManager
         // Guard against "oddities" (my shit coding)
         foreach (var label in Object.FindObjectsOfType<AbsoluteMapLabelBehaviour>())
         {
-            Object.Destroy(label);
+            Object.Destroy(label.gameObject);
         }
     }
 }
