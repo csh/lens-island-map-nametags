@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <AssemblyName>MapNames</AssemblyName>
-        <Product>Finer control over player volume</Product>
+        <AssemblyName>Map Nametags</AssemblyName>
+        <Product>Map Nametags</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
@@ -18,7 +18,7 @@
     
     <PropertyGroup>
         <BepInExPluginGuid>com.smrkn.island-named-map-markers</BepInExPluginGuid>
-        <BepInExPluginName>Named Player Markers</BepInExPluginName>
+        <BepInExPluginName>Map Nametags</BepInExPluginName>
     </PropertyGroup>
     
     <ItemGroup>
@@ -26,7 +26,6 @@
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2021.3.45" IncludeAssets="compile" />
-        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.*" PrivateAssets="all" />
         <PackageReference Include="LensIsland.GameLibs" Version="2025.7.10-r.1"/>
     </ItemGroup>
 
@@ -38,20 +37,27 @@
         <GamePath Condition="'$(GamePath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Len's Island</GamePath>
     </PropertyGroup>
 
-    <Target Name="CopyPluginToGame" AfterTargets="Build">
+    <Target Name="CopyPluginToGame" AfterTargets="Build" Condition="'$(CI)' != 'true'">
         <PropertyGroup>
-            <PluginOutputPath>$(OutputPath)$(AssemblyName).dll</PluginOutputPath>
-            <PdbOutputPath>$(OutputPath)$(AssemblyName).pdb</PdbOutputPath>
-            <BepInExOutputDir Condition="'$(Configuration)' == 'Debug'">$(GamePath)\BepInEx\scripts\</BepInExOutputDir>
-            <BepInExOutputDir Condition="'$(Configuration)' == 'Release'">$(GamePath)\BepInEx\plugins\</BepInExOutputDir>
+            <PluginOutputPath>$(OutputPath)\$(AssemblyName).dll</PluginOutputPath>
+            <PdbOutputPath>$(OutputPath)\$(AssemblyName).pdb</PdbOutputPath>
+            <BepInExPluginDir Condition="'$(BepInExPluginDir)' == ''">$(GamePath)\BepInEx\plugins\</BepInExPluginDir>
+            <ScriptEnginePath>$(BepInExPluginDir)\ScriptEngine.dll</ScriptEnginePath>
         </PropertyGroup>
+
+        <Message Condition="Exists('$(ScriptEnginePath)')" Importance="high" Text="ScriptEngine detected"/>
+
+        <PropertyGroup Condition="Exists('$(ScriptEnginePath)')">
+            <BepInExOutputDir>$(GamePath)\BepInEx\scripts\</BepInExOutputDir>
+        </PropertyGroup>
+
+        <PropertyGroup Condition="!Exists('$(ScriptEnginePath)')">
+            <BepInExOutputDir>$(GamePath)\BepInEx\plugins\</BepInExOutputDir>
+        </PropertyGroup>
+
         <Message Importance="high" Text="Copying $(PluginOutputPath) to $(BepInExOutputDir)" />
 
-        <!-- Debug: Copy DLL & PDB to scripts -->
-        <Copy Condition="'$(Configuration)' == 'Debug'" SourceFiles="$(PluginOutputPath)" DestinationFolder="$(BepInExOutputDir)" SkipUnchangedFiles="true" />
-        <Copy Condition="'$(Configuration)' == 'Debug'" SourceFiles="$(PdbOutputPath)" DestinationFolder="$(BepInExOutputDir)" SkipUnchangedFiles="true" />
-
-        <!-- Release: Copy DLL only to plugins -->
-        <Copy Condition="'$(Configuration)' == 'Release'" SourceFiles="$(PluginOutputPath)" DestinationFolder="$(BepInExOutputDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="$(PluginOutputPath)" DestinationFolder="$(BepInExOutputDir)" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="$(PdbOutputPath)" DestinationFolder="$(BepInExOutputDir)" SkipUnchangedFiles="true" />
     </Target>
 </Project>
