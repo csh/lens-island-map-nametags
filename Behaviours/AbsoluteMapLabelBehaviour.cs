@@ -54,6 +54,7 @@ public class AbsoluteMapLabelBehaviour : MonoBehaviour
         _tmp = gameObject.AddComponent<TextMeshProUGUI>();
         _tmp.fontSize = 13.5f;
         _tmp.alignment = TextAlignmentOptions.Center;
+        _tmp.fontStyle = FontStyles.Bold;
         _tmp.raycastTarget = false;
     }
 
