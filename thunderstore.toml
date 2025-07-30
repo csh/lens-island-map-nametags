@@ -1,0 +1,32 @@
+[general]
+repository = "https://thunderstore.io"
+
+[package]
+namespace = "smrkn"
+name = "MapNametags"
+versionNumber = "0.1.0"
+description = "Display player names on the map"
+websiteUrl = "https://github.com/csh/lens-island-map-nametags"
+
+[package.dependencies]
+BepInEx-BepInExPack_LensIsland = "5.4.2303"
+
+[build]
+icon = "icon.png"
+
+[[build.copy]]
+source = "LICENSE"
+target = "LICENSE"
+
+[[build.copy]]
+source = "./bin/Release/Nametags.dll"
+target = "BepInEx/plugins/Nametags.dll"
+
+[publish]
+categories = [
+    "mods"
+]
+
+communities = [ 
+    "lens-island" 
+]

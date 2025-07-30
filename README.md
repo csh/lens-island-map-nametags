@@ -1,5 +1,5 @@
-﻿# Map Nametags
+﻿# Nametags
 
-Simple BepInEx plugin for Len's Island that adds player names to the existing map markers.
+Adds player names to map markers in multiplayer so that you know who's who.
 
-Also prevents the local player marker from tilting as you adjust the camera.
+This mod also prevents the local player marker from tilting as you adjust your camera.
