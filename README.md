@@ -1,4 +1,4 @@
-﻿# Nametags
+# Nametags
 
 Adds player names to map markers in multiplayer so that you know who's who.
 
