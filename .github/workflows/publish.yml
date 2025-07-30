@@ -24,7 +24,7 @@ jobs:
     - name: Create Release ZIP
       run: ./tools/tcli build --package-version ${{ github.ref_name }}
     - name: Upload to Thunderstore
-      run: tcli publish --package-version ${{ github.ref_name }} --token ${{ secrets.THUNDERSTORE_TOKEN }}
+      run: ./tools/tcli publish --package-version ${{ github.ref_name }} --token ${{ secrets.THUNDERSTORE_TOKEN }}
     - name: Upload to GitHub
       uses: softprops/action-gh-release@v2
       with:
